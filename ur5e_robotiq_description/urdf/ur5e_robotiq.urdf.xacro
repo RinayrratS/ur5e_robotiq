@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="ur5e_with_robotiq">
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+
+  <link name="world"/>
+
+
+<!-- (1) UR5e (extracted from "ur_description/ur5_upload.launch" from "universal_robot" package-->
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur_common.xacro" />
+
+  <!-- ur5e -->
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur5e_macro.xacro" />
+
+  <!-- joint -->
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur_macro.xacro" />
+
+
+  <!-- arm -->
+  <xacro:ur5e_robot prefix="ur5e_" transmission_hw_interface="$(arg transmission_hw_interface)"/>
+
+   <!-- joint -->
+  <!-- <xacro:ur_robot
+  prefix="ur_e_"
+  transmission_hw_interface="$(arg transmission_hw_interface)"
+
+  /> -->
+
+
+
+  <joint name="ur5e_arm_joint" type="fixed">
+    <parent link="world" />
+    <child link = "ur5e_base_link" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+<!-- (2) Robotiq 2-finger gripper -->
+
+  <!-- robotieq 2f gripper -->
+  <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+
+
+  <!-- gripper -->
+  <xacro:robotiq_85_gripper prefix="2f-85_" parent="ur5e_tool0">
+    <origin xyz="0 0 0" rpy="0 0 -${PI/2}"/>
+  </xacro:robotiq_85_gripper>
+
+<!--
+  <joint name="2f-85_gripper_base_joint" type="fixed">
+    <parent link="ur5e_tool0" />
+    <child link = "2f-85_gripper_base_link" />
+    <origin xyz="0.05 0 0" rpy="0 ${PI/4*3} -${PI/2}" />
+  </joint> -->
+
+
+</robot>
