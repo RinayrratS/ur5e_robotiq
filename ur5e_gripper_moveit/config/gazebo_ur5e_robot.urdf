@@ -346,12 +346,7 @@
           Inject Gazebo ROS Control plugin, which allows us to use ros_control
           controllers to control the virtual robot hw.
         -->
-    <gazebo>
-        <plugin filename="libgazebo_ros_control.so" name="ros_control">
-            <!--robotNamespace>/</robotNamespace-->
-            <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
-        </plugin>
-    </gazebo>
+
 
     <joint name="gripper_base_joint" type="fixed">
         <parent link="tool0" />
@@ -661,8 +656,8 @@
         <plugin filename="libroboticsgroup_gazebo_mimic_joint_plugin.so" name="mimic_robotiq_85_3">
             <joint>gripper_finger1_joint</joint>
             <mimicJoint>gripper_finger1_inner_knuckle_joint</mimicJoint>
-            <!--multiplier>1.0</multiplier>
-                <offset>0.0</offset-->
+            <multiplier>1.0</multiplier>
+                <offset>0.0</offset>
         </plugin>
         <plugin filename="libroboticsgroup_gazebo_mimic_joint_plugin.so" name="mimic_robotiq_85_4">
             <joint>gripper_finger1_joint</joint>
@@ -680,53 +675,60 @@
     <transmission name="trans_gripper_finger2_joint">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="gripper_finger2_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="gripper_finger2_joint_motor">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_gripper_finger1_inner_knuckle_joint">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="gripper_finger1_inner_knuckle_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="gripper_finger1_inner_knuckle_joint_motor">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_gripper_finger2_inner_knuckle_joint">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="gripper_finger2_inner_knuckle_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="gripper_finger2_inner_knuckle_joint_motor">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_gripper_finger1_finger_tip_joint">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="gripper_finger1_finger_tip_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="gripper_finger1_finger_tip_joint_motor">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_gripper_finger2_finger_tip_joint">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="gripper_finger2_finger_tip_joint">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="gripper_finger2_finger_tip_joint_motor">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
+
+    <gazebo>
+        <plugin filename="libgazebo_ros_control.so" name="ros_control">
+            <!--robotNamespace>/</robotNamespace-->
+            <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
+        </plugin>
+    </gazebo>
 
 </robot>
 

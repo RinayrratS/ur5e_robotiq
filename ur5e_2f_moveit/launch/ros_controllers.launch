@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find ur5e_2f_moveit)/config/ros_controllers.yaml" command="load"/>
+
+  <!-- Load the controllers -->
+  <node name="controller_spawner1" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="joint_state_controller arm_controller gripper_controller"/>
+
+    <!-- Load the controllers -->
+  <node name="controller_spawner2" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="gripper_controller joint_position_controller"/>
+
+    <!-- Load the controllers -->
+  <node name="controller_spawner3" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="--stopped joint_position_controller"/>
+
+</launch>
