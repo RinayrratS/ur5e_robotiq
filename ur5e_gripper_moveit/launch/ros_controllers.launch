@@ -8,4 +8,7 @@
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
     output="screen" args="ur5e_arm_controller gripper_controller joint_state_controller"/>
 
+  <node name="controller_spawner2" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="gripper_controller"/>
+
 </launch>
