@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1.3)
-project(ur5e_gripper_moveit)
+project(ur5e_robotiq_moveit_config)
 
 find_package(catkin REQUIRED)
 

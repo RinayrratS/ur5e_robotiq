@@ -4,6 +4,61 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="ur5e_robot">
+    <!--
+    Base UR robot series xacro macro.
+
+    NOTE: this is NOT a URDF. It cannot directly be loaded by consumers
+    expecting a flattened '.urdf' file. See the top-level '.xacro' for that
+    (but note: that .xacro must still be processed by the xacro command).
+
+    For use in '.launch' files: use one of the 'load_urX.launch' convenience
+    launch files.
+
+    This file models the base kinematic chain of a UR robot, which then gets
+    parameterised by various configuration files to convert it into a UR3(e),
+    UR5(e), UR10(e) or UR16e.
+
+    NOTE: the default kinematic parameters (ie: link lengths, frame locations,
+    offets, etc) do not correspond to any particular robot. They are defaults
+    only. There WILL be non-zero offsets between the Forward Kinematics results
+    in TF (ie: robot_state_publisher) and the values reported by the Teach
+    Pendant.
+
+    For accurate (and robot-specific) transforms, the 'kinematics_parameters_file'
+    parameter MUST point to a .yaml file containing the appropriate values for
+    the targetted robot.
+
+    If using the UniversalRobots/Universal_Robots_ROS_Driver, follow the steps
+    described in the readme of that repository to extract the kinematic
+    calibration from the controller and generate the required .yaml file.
+
+    Main author of the migration to yaml configs: Ludovic Delval.
+
+    Contributors to previous versions (in no particular order):
+
+     - Felix Messmer
+     - Kelsey Hawkins
+     - Wim Meeussen
+     - Shaun Edwards
+     - Nadia Hammoudeh Garcia
+     - Dave Hershberger
+     - G. vd. Hoorn
+     - Philip Long
+     - Dave Coleman
+     - Miguel Prada
+     - Mathias Luedtke
+     - Marcel Schnirring
+     - Felix von Drigalski
+     - Felix Exner
+     - Jimmy Da Silva
+     - Ajit Krisshna N L
+     - Muhammad Asif Rana
+  -->
+    <!--
+    NOTE: the macro defined in this file is NOT part of the public API of this
+          package. Users CANNOT rely on this file being available, or stored in
+          this location. Nor can they rely on the existence of the macro.
+  -->
     <transmission name="shoulder_pan_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="shoulder_pan_joint">
@@ -64,19 +119,8 @@
             <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </actuator>
     </transmission>
-
-
-    <!-- World -->
-    <link name="world"/>
-    <link name="base_link" />
-    <!-- World fixed joint-->
-    <joint name="world_fixed" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <parent link="world"/>
-    <child link="base_link"/>
-    </joint>
-
     <!-- links: main serial chain -->
+    <link name="base_link" />
     <link name="base_link_inertia">
         <visual>
             <origin rpy="0 0 3.141592653589793" xyz="0 0 0" />
@@ -233,6 +277,17 @@
         </inertial>
     </link>
     <!-- joints: main serial chain -->
+
+        <!-- World -->
+    <link name="world"/>
+    <!-- World fixed joint-->
+    <joint name="world_fixed" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="base_link"/>
+    </joint>
+
+
     <joint name="base_link-base_link_inertia" type="fixed">
         <parent link="base_link" />
         <child link="base_link_inertia" />
@@ -319,34 +374,6 @@
         <child link="tool0" />
     </joint>
 
-    <!-- Configure self collision properties per link -->
-    <gazebo reference="shoulder_link">
-        <selfCollide>true</selfCollide>
-    </gazebo>
-    <gazebo reference="upper_arm_link">
-        <selfCollide>true</selfCollide>
-    </gazebo>
-    <gazebo reference="forearm_link">
-        <selfCollide>true</selfCollide>
-    </gazebo>
-    <gazebo reference="wrist_1_link">
-        <selfCollide>true</selfCollide>
-    </gazebo>
-    <gazebo reference="wrist_3_link">
-        <selfCollide>true</selfCollide>
-    </gazebo>
-    <gazebo reference="wrist_2_link">
-        <selfCollide>true</selfCollide>
-    </gazebo>
-    <gazebo reference="ee_link">
-        <selfCollide>true</selfCollide>
-    </gazebo>
-
-    <!--
-          Inject Gazebo ROS Control plugin, which allows us to use ros_control
-          controllers to control the virtual robot hw.
-        -->
-
 
     <joint name="gripper_base_joint" type="fixed">
         <parent link="tool0" />
@@ -376,8 +403,8 @@
         <mu2>100000</mu2>
         <kp>100000000.0</kp>
         <kd>1.0</kd>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>/myrobot</robotNamespace>
+        <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+            <robotNamespace>/</robotNamespace>
         </plugin>
     </gazebo>
     <joint name="gripper_finger1_joint" type="revolute">
@@ -385,7 +412,7 @@
         <child link="gripper_finger1_knuckle_link" />
         <axis xyz="0 0 1" />
         <origin rpy="3.141592653589793 0.0 0.0" xyz="0.05490451627 0.03060114443 0.0" />
-        <limit effort="1000" lower="0.0" upper="0.804" velocity="2.0" />
+        <limit effort="1000" lower="-0.8757" upper="0.8757" velocity="2.0" />
     </joint>
     <joint name="gripper_finger2_joint" type="revolute">
         <parent link="gripper_base_link" />
@@ -632,11 +659,11 @@
     <transmission name="gripper_finger1_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="gripper_finger1_joint">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="gripper_finger1_motor">
             <mechanicalReduction>1</mechanicalReduction>
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </actuator>
     </transmission>
     <gazebo>
@@ -644,7 +671,7 @@
         <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so" name="mimic_robotiq_85_1">
             <joint>gripper_finger1_joint</joint>
             <mimicJoint>gripper_finger2_joint</mimicJoint>
-            <multiplier>-1.0</multiplier>
+            <multiplier>1.0</multiplier>
                 <offset>0.0</offset>
         </plugin>
         <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so" name="mimic_robotiq_85_2">
